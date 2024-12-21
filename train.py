@@ -102,4 +102,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # python /home/wayne/Desktop/PR_final/train.py /home/wayne/Desktop/PR_final/segformer/config_b0.py --work-dir /home/wayne/Desktop/PR_final/segformer/work_dirs
+    # python3 /home/wayne/Desktop/PR_final/train.py /home/wayne/Desktop/PR_final/segformer/config.py --work-dir /home/wayne/Desktop/PR_final/segformer/work_dirs

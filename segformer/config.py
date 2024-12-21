@@ -46,9 +46,8 @@ data_preprocessor = dict(size=crop_size)
 
 default_hooks = dict(
     timer=dict(type='IterTimerHook'),
-    logger=dict(type='LoggerHook', interval=50),  # output log every 50 iteration
+    logger=dict(type='LoggerHook', interval=5000),  # output log every 5000 iteration
     param_scheduler=dict(type='ParamSchedulerHook'),
-    checkpoint=dict(type='CheckpointHook', interval=1, max_keep_ckpts=3),  # 每 1 epoch 儲存一次模型，最多保留 3 個檢查點
-    sampler_seed=dict(type='DistSamplerSeedHook'),
-    visualization=dict(type='VisualizationHook', interval=50)  # 可視化輸出，每 50 iteration 啟動一次
+    checkpoint=dict(type='CheckpointHook', interval=50, max_keep_ckpts=3),  # 每 50 epoch 儲存一次模型，最多保留 3 個檢查點
+    sampler_seed=dict(type='DistSamplerSeedHook')
 )
