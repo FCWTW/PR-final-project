@@ -4,7 +4,7 @@ from mmengine import Config
 import cv2
 import sys
 
-video_url = '/home/wayne/Desktop/PR_final/video/001.mp4'
+video_url = '/home/wayne/Desktop/PR_final/test_video/001.mp4'
 config_file = '/home/wayne/Desktop/PR_final/segformer/config_b5.py'
 
 def segmentation_result(result, input_image):
@@ -14,7 +14,7 @@ def segmentation_result(result, input_image):
     # print(f"Max class index in pred_mask: {max_index}")
     
     palette = np.array([
-        [0, 0, 0], [128, 0, 0], [0, 128, 0], [128, 128, 0], [0, 0, 128], [128, 0, 128], [0, 128, 128], [128, 128, 128],
+        [128, 0, 0], [0, 128, 0], [128, 128, 0], [0, 0, 128], [128, 0, 128], [0, 128, 128], [128, 128, 128],
         [64, 0, 0], [0, 64, 0], [0, 0, 64], [64, 64, 0], [0, 64, 64], [64, 0, 64], [64, 64, 64],
         [192, 0, 0], [0, 192, 0], [0, 0, 192], [192, 192, 0], [0, 192, 192], [192, 0, 192], [192, 192, 192]
     ])

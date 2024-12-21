@@ -49,7 +49,7 @@ train_dataloader = dict(
         data_root=data_root,
         data_prefix=dict(
             img_path='leftImg8bit/leftImg8bit/train', seg_map_path='gtFine/gtFine/train'),
-        pipeline=train_pipeline))
+        pipeline=[dict(type='CheckLabelRange'), *train_pipeline]))
 val_dataloader = dict(
     batch_size=1,
     num_workers=4,

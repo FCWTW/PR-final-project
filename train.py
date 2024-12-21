@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import logging
 import os
@@ -9,7 +8,21 @@ from mmengine.logging import print_log
 from mmengine.runner import Runner
 
 from mmseg.registry import RUNNERS
+import numpy as np
+from mmcv.transforms import BaseTransform
+from mmengine.registry import TRANSFORMS
 
+@TRANSFORMS.register_module()
+class CheckLabelRange(BaseTransform):
+    def __init__(self):
+        pass
+    
+    def transform(self, results):
+        print("Keys in results:", results.keys())
+        labels = results['label_map']
+        print("Min label:", np.min(labels))
+        print("Max label:", np.max(labels))
+        return results
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a segmentor')
@@ -86,6 +99,7 @@ def main():
 
     # resume training
     cfg.resume = args.resume
+    cfg.train_dataloader['dataset']['pipeline'].insert(1, dict(type='CheckLabelRange'))
 
     # build the runner from config
     if 'runner_type' not in cfg:
