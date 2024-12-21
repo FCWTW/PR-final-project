@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'CityscapesDataset'
-data_root = 'data/cityscapes/'
+data_root = '/media/wayne/614E3B357F566CB2/cityscapes/'
 crop_size = (512, 1024)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -48,7 +48,7 @@ train_dataloader = dict(
         type=dataset_type,
         data_root=data_root,
         data_prefix=dict(
-            img_path='leftImg8bit/train', seg_map_path='gtFine/train'),
+            img_path='leftImg8bit/leftImg8bit/train', seg_map_path='gtFine/gtFine/train'),
         pipeline=train_pipeline))
 val_dataloader = dict(
     batch_size=1,
@@ -59,7 +59,7 @@ val_dataloader = dict(
         type=dataset_type,
         data_root=data_root,
         data_prefix=dict(
-            img_path='leftImg8bit/val', seg_map_path='gtFine/val'),
+            img_path='leftImg8bit/leftImg8bit/val', seg_map_path='gtFine/gtFine/val'),
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
