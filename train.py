@@ -46,25 +46,22 @@ class CustomLoadAnnotations(BaseTransform):
         self.reduce_zero_label = reduce_zero_label
 
     def transform(self, annotation_results):
-        # 获取标注图像路径
+        # Get segmentation file path
         seg_map_path = annotation_results.get('seg_map_path', None)
         if seg_map_path is not None:
-            # 替换为 _labelIds.png 文件
+            # Replace to _labelIds.png
             seg_map_path = seg_map_path.replace('_labelTrainIds.png', '_labelIds.png')
             annotation_results['seg_map_path'] = seg_map_path
 
-            # 加载标注图像
+            # Load segmentation map
             seg_map = np.array(Image.open(seg_map_path), dtype=np.uint8)
             print(f"gt_seg_map added to results: {annotation_results['seg_map_path']}")
             
-            # 将标注数据添加到 results 中
+            # Add into results 
             annotation_results['gt_seg_map'] = seg_map
 
             if self.reduce_zero_label:
-                # 如果需要将标签0排除，进行标签映射
                 annotation_results['gt_seg_map'][annotation_results['gt_seg_map'] == 0] = 255
-            
-            annotation_results['label_map'] = annotation_results['gt_seg_map']
 
         else:
             raise ValueError(f"Segmentation map path is missing in results: {seg_map_path}")
@@ -165,4 +162,7 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # python3 /home/wayne/Desktop/PR_final/train.py /home/wayne/Desktop/PR_final/segformer/config.py --work-dir /home/wayne/Desktop/PR_final/segformer/work_dirs
+    '''
+    Use following command for training
+    python3 /home/wayne/Desktop/PR_final/train.py /home/wayne/Desktop/PR_final/segformer/config.py --work-dir /home/wayne/Desktop/PR_final/segformer/work_dirs
+    '''
