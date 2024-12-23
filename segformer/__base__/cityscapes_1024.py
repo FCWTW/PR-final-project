@@ -1,8 +1,9 @@
-_base_ = '/home/wayne/Desktop/PR_final/segformer/__base__/cityscapes.py'
-crop_size = (1024, 1024)
+dataset_type = 'CityscapesDataset'
+data_root = '/media/wayne/614E3B357F566CB2/cityscapes/'
+crop_size = (512, 1024)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='LoadAnnotations'),
+    dict(type='CustomLoadAnnotations', reduce_zero_label=False),
     dict(
         type='RandomResize',
         scale=(2048, 1024),
@@ -18,11 +19,31 @@ test_pipeline = [
     dict(type='Resize', scale=(2048, 1024), keep_ratio=True),
     # add loading annotation after ``Resize`` because ground truth
     # does not need to do resize data transform
-    dict(type='LoadAnnotations'),
+    dict(type='CustomLoadAnnotations', reduce_zero_label=False),
     dict(type='PackSegInputs')
 ]
-train_dataloader = dict(dataset=dict(pipeline=train_pipeline))
-val_dataloader = dict(dataset=dict(pipeline=test_pipeline))
+train_dataloader = dict(
+    batch_size=2,
+    num_workers=2,
+    persistent_workers=True,
+    sampler=dict(type='InfiniteSampler', shuffle=True),
+    dataset=dict(
+        type=dataset_type,
+        data_root=data_root,
+        data_prefix=dict(
+            img_path='leftImg8bit/leftImg8bit/train', seg_map_path='gtFine/gtFine/train'),
+        pipeline=[dict(type='CheckLabelRange'), *train_pipeline]))
+val_dataloader = dict(
+    batch_size=1,
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(type='DefaultSampler', shuffle=False),
+    dataset=dict(
+        type=dataset_type,
+        data_root=data_root,
+        data_prefix=dict(
+            img_path='leftImg8bit/leftImg8bit/val', seg_map_path='gtFine/gtFine/val'),
+        pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])

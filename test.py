@@ -1,58 +1,61 @@
+'''
+import os
+
+data_root = '/media/wayne/614E3B357F566CB2/cityscapes/'
+img_path = os.path.join(data_root, 'leftImg8bit/leftImg8bit/train')
+seg_map_path = os.path.join(data_root, 'gtFine/gtFine/train')
+
+print("Image path:", img_path)
+print("Segmentation map path:", seg_map_path)
+
+print("Image path exists:", os.path.exists(img_path))
+print("Segmentation map path exists:", os.path.exists(seg_map_path))
+'''
+
+from mmseg.datasets import LoadAnnotations
+import os
 import numpy as np
-from mmseg.apis import init_model, inference_model
-from mmengine import Config
-import cv2
-import sys
+from PIL import Image
+import numpy as np
 
-video_url = '/home/wayne/Desktop/PR_final/test_video/001.mp4'
-config_file = '/home/wayne/Desktop/PR_final/segformer/config_b5.py'
+# test label
+seg_map_path = '/media/wayne/614E3B357F566CB2/cityscapes/gtFine/gtFine/train/monchengladbach/monchengladbach_000000_026602_gtFine_labelIds.png'
 
-def segmentation_result(result, input_image):
-    # Extract masks and generate color images
-    pred_mask = result.pred_sem_seg.data.cpu().numpy().squeeze()
-    max_index = np.max(pred_mask)
-    # print(f"Max class index in pred_mask: {max_index}")
-    
-    palette = np.array([
-        [128, 0, 0], [0, 128, 0], [128, 128, 0], [0, 0, 128], [128, 0, 128], [0, 128, 128], [128, 128, 128],
-        [64, 0, 0], [0, 64, 0], [0, 0, 64], [64, 64, 0], [0, 64, 64], [64, 0, 64], [64, 64, 64],
-        [192, 0, 0], [0, 192, 0], [0, 0, 192], [192, 192, 0], [0, 192, 192], [192, 0, 192], [192, 192, 192]
-    ])
+img = Image.open(seg_map_path)
+img_np = np.array(img)
 
-    if max_index >= len(palette):
-        raise ValueError(f"Palette size is insufficient for class index {max_index}")
-    
-    # Create colorful mask
-    color_seg = palette[pred_mask].astype(input_image.dtype)
-    seg_map = cv2.addWeighted(input_image, 0.5, color_seg, 0.5, 0)
-    return seg_map
+# print(f"Image shape: {img_np.shape}")
+# print(f"Unique pixel values: {np.unique(img_np)}")
 
-if __name__ == "__main__":
-    # Prepare for segformer
-    cfg = Config.fromfile(config_file)
-    model = init_model(cfg, checkpoint=cfg.model.backbone.init_cfg.checkpoint, device='cuda:0')
+if os.path.exists(seg_map_path):
+    loader = LoadAnnotations(reduce_zero_label=False)
+    results = dict(
+        seg_map_path=seg_map_path,
+        reduce_zero_label=False,
+        seg_fields=[]
+    )
 
-    flag = 0
-    cap = cv2.VideoCapture(video_url)
-    if not cap.isOpened():
-        print(f"Error: Could not open video file {video_url}")
-        sys.exit(1)
+    try:
+        # 使用 PIL 打开文件
+        img = Image.open(seg_map_path)
+        label_map = np.array(img)
+        print(f"Type of label_map: {type(label_map)}")
+        # print(f"Label map shape: {label_map.shape}, Min: {label_map.min()}, Max: {label_map.max()}")
+    except Exception as e:
+        print(f"Error during manual loading: {e}")
         
-    ret, frame = cap.read()
-    if not ret:
-        print("Error: Failed to read frame from video.")
-        sys.exit(1)
-
-    height, width = frame.shape[:2]
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    video_out = cv2.VideoWriter('./result/001.mp4', fourcc, 30, (width,height))
-
-    # Process video
-    while(ret):
-        result = inference_model(model, frame)
-        seg_map = segmentation_result(result, frame)
-        video_out.write(seg_map)
-        ret, frame = cap.read()
-
-    cap.release()
-    video_out.release()
+    try:
+        # Use loader
+        results = loader(results)
+        print(results)
+        # Get label
+        label_map = results.get('gt_seg_map', None)
+        print(f"Type of label_map: {type(label_map)}")
+        if isinstance(label_map, np.ndarray):
+            print(f"Label map shape: {label_map.shape}, Min: {label_map.min()}, Max: {label_map.max()}")
+        else:
+            print("Failed to load label map.")
+    except Exception as e:
+        print(f"Error during loading: {e}")
+else:
+    print(f"Label file not found: {seg_map_path}")

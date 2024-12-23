@@ -5,9 +5,9 @@ base_folder = '/media/wayne/614E3B357F566CB2/cityscapes/gtFine/gtFine/train/'
 
 for root, dirs, files in os.walk(base_folder):
     for filename in files:
-        if filename.endswith('gtFine_labelIds.png'):
+        if filename.endswith('gtFine_labelTrainIds.png'):
             # Get new name
-            new_name = filename.replace('gtFine_labelIds', 'gtFine_labelTrainIds')
+            new_name = filename.replace('gtFine_labelTrainIds', 'gtFine_labelIds')
             # Get full file path
             old_path = os.path.join(root, filename)
             new_path = os.path.join(root, new_name)
