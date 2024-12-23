@@ -1,6 +1,6 @@
 _base_ = [
     '/home/wayne/Desktop/PR_final/segformer/__base__/segformer_mit_b0.py',
-    '/home/wayne/Desktop/PR_final/segformer/__base__/cityscapes_1024.py',
+    '/home/wayne/Desktop/PR_final/segformer/__base__/cityscapes_for_train.py',
     '/home/wayne/Desktop/PR_final/segformer/__base__/default_runtime.py',
     '/home/wayne/Desktop/PR_final/segformer/__base__/schedule_160k.py'
 ]
