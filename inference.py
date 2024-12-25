@@ -5,7 +5,7 @@ import cv2
 import sys
 import matplotlib.pyplot as plt
 
-video_url = '/home/wayne/Desktop/PR_final/test_video/001.mp4'
+video_url = '/home/wayne/Desktop/PR_final/test_video/test_video.mp4'
 config_file = '/home/wayne/Desktop/PR_final/segformer/config_b5.py'
 
 def segmentation_result(result, input_image, class_names):
@@ -31,7 +31,7 @@ def segmentation_result(result, input_image, class_names):
 
 # Draw class names and corresponding colors below the image
 def draw_labels(image, class_names, used_classes, palette):
-    canvas_height = image.shape[0] + 300
+    canvas_height = image.shape[0] + 500
     canvas = np.ones((canvas_height, image.shape[1], 3), dtype=np.uint8) * 255
 
     # Copy the image onto the canvas
@@ -40,10 +40,11 @@ def draw_labels(image, class_names, used_classes, palette):
     # Initialize offset
     font_scale = 1.5
     font_color = (0, 0, 0)
-    label_box_size = 60  # (font_scale * 20) and label box is a square
+    label_box_size = font_scale*20  # label box is a square
     y_offset = image.shape[0] + 20
     x_offset_start = 60
     x_offset = x_offset_start
+    max_labels_per_row = max(width // 350, 1)
 
     # Draw each label
     for i, class_idx in enumerate(used_classes):
@@ -59,7 +60,7 @@ def draw_labels(image, class_names, used_classes, palette):
             sys.exit(1)
 
         # Put only six categories per row
-        if (i + 1) % 5 == 0:
+        if (i + 1) % max_labels_per_row == 0:
             x_offset = x_offset_start
             y_offset += label_box_size + 10
 
@@ -85,7 +86,7 @@ if __name__ == "__main__":
     height, width = frame.shape[:2]
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    video_out = cv2.VideoWriter('./result/001.mp4', fourcc, fps, (width, height + 300))
+    video_out = cv2.VideoWriter('./result/001.mp4', fourcc, fps, (width, height + 500))
 
     # Process video
     while(ret):
