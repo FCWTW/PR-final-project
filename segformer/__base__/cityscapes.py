@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'CityscapesDataset'
-data_root = '/media/wayne/614E3B357F566CB2/cityscapes/'
+data_root = '/media/wayne/614E3B357F566CB2/cityscapes'
 crop_size = (512, 1024)
 train_pipeline = [
     dict(type='LoadImageFromFile'),

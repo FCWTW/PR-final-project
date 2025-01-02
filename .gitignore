@@ -1,4 +1,3 @@
-/segformer/segformer_b5.pth
 /segformer/work_dirs/*
 
 /test_video/*

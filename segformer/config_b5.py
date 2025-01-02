@@ -7,7 +7,7 @@ _base_ = [
 
 crop_size = (1024, 1024)
 data_preprocessor = dict(size=crop_size)
-checkpoint = '/home/wayne/Desktop/PR_final/segformer/segformer_b5.pth'
+checkpoint = '/home/wayne/Desktop/PR_final/segformer/work_dirs/segformer_b5.pth'
 model = dict(
     data_preprocessor=data_preprocessor,
     backbone=dict(init_cfg=dict(type='Pretrained', checkpoint=checkpoint)),
