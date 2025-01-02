@@ -1,7 +1,7 @@
-# Final project of Pattern Recognition
+# Pattern Recognition Final Project
 
-## Segformer pretrained model
-https://github.com/open-mmlab/mmsegmentation/tree/v1.2.2/configs/segformer
+## Source
+https://github.com/NVlabs/SegFormer
 
 ## Environment
 
@@ -12,7 +12,6 @@ mmcv = 2.1.0、
 mmengine = 0.10.5、
 mmseg = 1.2.2
 
-
 ```bash
 pip install -U openmim
 mim install "mmcv==2.1.0"
@@ -22,3 +21,9 @@ mim install mmsegmentation
 pip install ftfy
 pip install regex
 ```
+
+## Dataset
+https://www.cityscapes-dataset.com/
+
+## Result showcase
+https://youtu.be/XEacWkDK8iE
