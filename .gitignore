@@ -1,4 +1,4 @@
-/segformer/work_dirs/*
+/Segformer/work_dirs/*
 
 /test_video/*
 /result/*

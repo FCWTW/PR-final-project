@@ -4,7 +4,7 @@ from mmengine import Config
 import cv2
 import matplotlib.pyplot as plt
 
-img_url = '/home/wayne/Desktop/PR_final/test_img/img.png'
+img_url = '/home/wayne/Desktop/PR_final/test_img/original.png'
 save_url = '/home/wayne/Desktop/PR_final/result/segformer_img.png'
 config_file = '/home/wayne/Desktop/PR_final/segformer/config_b5.py'
 

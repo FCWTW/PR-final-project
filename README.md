@@ -3,7 +3,9 @@
 ## Source
 https://github.com/NVlabs/SegFormer
 
-## Environment
+https://github.com/speedinghzl/CCNet/tree/pure-python?tab=readme-ov-file
+
+## Environment for Segformer
 
 Python = 3.9、
 CUDA = 11.8、
