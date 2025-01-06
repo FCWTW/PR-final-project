@@ -1,15 +1,9 @@
 import torch.nn as nn
 from torch.nn import functional as F
-import math
-import torch.utils.model_zoo as model_zoo
 import torch
 import numpy as np
-from torch.autograd import Variable
 affine_par = True
 import functools
-
-import sys, os
-
 from cc_attention import CrissCrossAttention
 from utils.pyt_utils import load_model
 

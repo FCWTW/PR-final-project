@@ -4,9 +4,9 @@ from mmengine import Config
 import cv2
 import matplotlib.pyplot as plt
 
-img_url = '/home/wayne/Desktop/PR_final/test_img/original.png'
-save_url = '/home/wayne/Desktop/PR_final/result/segformer_img.png'
-config_file = '/home/wayne/Desktop/PR_final/segformer/config_b5.py'
+IMAGE_PATH = '/home/wayne/Desktop/PR_final/test_img/original.png'
+OUTPUT_PATH = '/home/wayne/Desktop/PR_final/result/segformer_img.png'
+CONFIG_PATH = '/home/wayne/Desktop/PR_final/segformer/config_b5.py'
 
 def save_segmentation_result(result, class_names):
     # Extract masks and generate color images
@@ -23,15 +23,15 @@ def save_segmentation_result(result, class_names):
     
     # Create colorful mask
     color_seg = palette[pred_mask]
-    input_image = cv2.imread(img_url)
+    input_image = cv2.imread(IMAGE_PATH)
     seg_map = cv2.addWeighted(input_image, 0.5, color_seg, 0.5, 0)
-    cv2.imwrite(save_url, seg_map)
+    cv2.imwrite(OUTPUT_PATH, seg_map)
 
 if __name__ == "__main__":
     # Prepare for segformer
-    cfg = Config.fromfile(config_file)
+    cfg = Config.fromfile(CONFIG_PATH)
     model = init_model(cfg, checkpoint=cfg.model.backbone.init_cfg.checkpoint, device='cuda:0')
     class_names = model.dataset_meta['classes']
 
-    result = inference_model(model, img_url)
+    result = inference_model(model, IMAGE_PATH)
     save_segmentation_result(result, class_names)

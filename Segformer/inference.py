@@ -5,8 +5,8 @@ import cv2
 import sys
 import matplotlib.pyplot as plt
 
-video_url = '/home/wayne/Desktop/PR_final/test_video/test_video.mp4'
-config_file = '/home/wayne/Desktop/PR_final/segformer/config_b5.py'
+VIDEO_PATH = '/home/wayne/Desktop/PR_final/test_video/test_video.mp4'
+CONFIG_PATH = '/home/wayne/Desktop/PR_final/segformer/config_b5.py'
 
 def segmentation_result(result, input_image, class_names):
     # Extract masks and generate color images
@@ -68,13 +68,13 @@ def draw_labels(image, class_names, used_classes, palette):
 
 if __name__ == "__main__":
     # Prepare for segformer
-    cfg = Config.fromfile(config_file)
+    cfg = Config.fromfile(CONFIG_PATH)
     model = init_model(cfg, checkpoint=cfg.model.backbone.init_cfg.checkpoint, device='cuda:0')
     class_names = model.dataset_meta['classes']
 
-    cap = cv2.VideoCapture(video_url)
+    cap = cv2.VideoCapture(VIDEO_PATH)
     if not cap.isOpened():
-        print(f"Error: Could not open video file {video_url}")
+        print(f"Error: Could not open video file {VIDEO_PATH}")
         sys.exit(1)
         
     ret, frame = cap.read()

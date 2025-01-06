@@ -1,13 +1,10 @@
-import os
 import os.path as osp
 import numpy as np
 import random
-import collections
-import torch
 import torchvision
 import cv2
 from torch.utils import data
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 
 class VOCDataSet(data.Dataset):

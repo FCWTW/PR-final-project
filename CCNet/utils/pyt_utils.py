@@ -4,6 +4,8 @@ import sys
 import time
 import argparse
 from collections import OrderedDict, defaultdict
+import numpy as np
+from PIL import Image
 
 import torch
 import torch.utils.model_zoo as model_zoo
