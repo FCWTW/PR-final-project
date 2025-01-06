@@ -1,6 +1,6 @@
 # Pattern Recognition Final Project
 
-## Source code
+## Code source
 
 https://github.com/NVlabs/SegFormer
 
