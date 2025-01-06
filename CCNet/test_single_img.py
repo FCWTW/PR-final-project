@@ -30,35 +30,29 @@ def predict_whole(net, image, tile_size):
             prediction = prediction[0]
         prediction = interp(prediction).cpu().numpy()[0]  # (19, H, W)
     return prediction
-# def predict_whole(net, image, tile_size, flip_evaluation, recurrence):
-#     interp = nn.Upsample(size=tile_size, mode='bilinear', align_corners=True)
-#     prediction = net(image.cuda(), recurrence)
-#     if isinstance(prediction, list):
-#         prediction = prediction[0]
-#     prediction = interp(prediction).cpu().data[0].numpy().transpose(1,2,0)
-#     return prediction
 
 if __name__ == '__main__':
-    print("Load model")
     # Load model
+    print("Load model")
     model = Seg_Model(num_classes=NUM_CLASSES, pretrained_model=MODEL_PATH)
     model.eval().cuda()
 
-    print("Process image")
     # Load image
+    print("Process image")
     image = cv2.imread(IMAGE_PATH).astype(np.float32)
     h, w, _ = image.shape
 
     # Image preprocessing
-    image -= IMG_MEAN  # 減去均值標準化
+    image -= IMG_MEAN
     image = cv2.resize(image, INPUT_SIZE)
     image = image.transpose((2, 0, 1))
     image = torch.tensor(image).unsqueeze(0).cuda()
 
-    print("testing...")
     # Predict
+    print("testing...")
     output = predict_whole(model, image, (h, w))
     print("finish test")
+
     # Get segmentation map
     seg_map = np.argmax(output, axis=0).astype(np.uint8)
 
